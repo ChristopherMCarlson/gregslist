@@ -17,7 +17,7 @@
     <input type="text" name="model" placeholder="Model" required>
     <input type="number" name="year" placeholder="Year" value="2000" required>
     <input type="number" name="price" placeholder="Price" required>
-    <input type="text" name="color" placeholder="Color" required>
+    <input type="text" name="description" placeholder="Description" required>
     <input type="url" name="imgUrl" placeholder="Image Link" required>
     <button type="submit">Submit</button>
   </form>
@@ -30,12 +30,13 @@
   </div>
 
   <form onsubmit="app.controllers.houseController.addHouse(event)">
-    <input type="text" name="address" placeholder="Address" required>
-    <input type="number" name="sqFt" placeholder="Sq Feet" required>
-    <input type="number" name="rooms" placeholder="Rooms" required>
-    <input type="number" name="bath" placeholder="Bath" required>
+    <input type="number" name="bedrooms" placeholder="Bedrooms" required>
+    <input type="number" name="bathrooms" placeholder="Bathrooms" required>
+    <input type="url" name="imgUrl" placeholder="Image" required>
+    <input type="number" name="levels" placeholder="Levels" required>
+    <input type="number" name="year" placeholder="Year" required>
     <input type="number" name="price" placeholder="Price" required>
-    <input type="url" name="imgUrl" placeholder="Image Link" required>
+    <input type="text" name="description" placeholder="Description" required>
     <button type="submit">Submit</button>
   </form>
 
@@ -46,11 +47,11 @@
   </div>
 
   <form onsubmit="app.controllers.jobController.addJob(event)">
-    <input type="text" name="title" placeholder="Title" required>
+    <input type="text" name="company" placeholder="Company" required>
+    <input type="text" name="jobTitle" placeholder="Job Title" required>
     <input type="text" name="hours" placeholder="Hours" required>
-    <input type="text" name="pay" placeholder="Pay" required>
-    <input type="text" name="benefits" placeholder="Benefits" required>
-    <input type="text" name="address" placeholder="Address" required>
+    <input type="number" name="rate" placeholder="Rate" required>
+    <input type="text" name="description" placeholder="Description" required>
     <button type="submit">Submit</button>
   </form>
 
@@ -59,6 +60,7 @@
 
     </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
   <script src="main.js" type="module"></script>
 </body>
 

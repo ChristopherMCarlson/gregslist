@@ -1,37 +1,38 @@
 import House from '../../models/House.js'
 
-let houses = []
+const housesApi = axios.create({
+  baseURL: 'https://bcw-gregslist.herokuapp.com/api/houses',
+  timeout: 3000
+})
 
 export default class HouseService {
   constructor() {
 
   }
 
-  getHouses() {
-    let housesCopy = []
-
-    houses.forEach(house => {
-      housesCopy.push(new House(
-        house.address,
-        house.sqFt,
-        house.rooms,
-        house.bath,
-        house.price,
-        house.imgUrl
-      ))
-    })
-    return housesCopy
+  getHouses(draw) {
+    housesApi.get()
+      .then(res => {
+        let houses = res.data.data.map(rH => {
+          return new House(rH)
+        })
+        draw(houses)
+      })
   }
 
-  addHouse(formData) {
-    let newHouse = new House(
-      formData.address.value,
-      formData.sqFt.value,
-      formData.rooms.value,
-      formData.bath.value,
-      formData.price.value,
-      formData.imgUrl.value
-    )
-    houses.push(newHouse)
+  addHouse(formData, draw) {
+    let newHouse = new House({
+      bedrooms: formData.bedrooms.value,
+      bathrooms: formData.bathrooms.value,
+      imgUrl: formData.imgUrl.value,
+      levels: formData.levels.value,
+      year: formData.year.value,
+      price: formData.price.value,
+      description: formData.description.value
+    })
+    housesApi.post('', newHouse)
+      .then(res => {
+        this.getHouses(draw)
+      })
   }
 }

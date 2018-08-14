@@ -1,36 +1,36 @@
 import Job from "../../models/Job.js"
 
-let jobs = []
+const jobsApi = axios.create({
+  baseURL: 'https://bcw-gregslist.herokuapp.com/api/jobs',
+  timeout: 3000
+})
 
 export default class JobService {
   constructor() {
 
   }
 
-  getJobs() {
-    let jobsCopy = []
-
-    jobs.forEach(job => {
-      jobsCopy.push(new Job(
-        job.title,
-        job.hours,
-        job.pay,
-        job.benefits,
-        job.address
-      ))
-    })
-    return jobsCopy
+  getJobs(draw) {
+    jobsApi.get()
+      .then(res => {
+        let jobs = res.data.data.map(rJ => {
+          return new Job(rJ)
+        })
+        draw(jobs)
+      })
   }
 
-  addJob(formData) {
-    let newJob = new Job(
-      formData.title.value,
-      formData.hours.value,
-      formData.pay.value,
-      formData.benefits.value,
-      formData.address.value
-    )
-    jobs.push(newJob)
-    console.log(newJob)
+  addJob(formData, draw) {
+    let newJob = new Job({
+      company: formData.company.value,
+      jobTitle: formData.jobTitle.value,
+      hours: formData.hours.value,
+      rate: formData.rate.value,
+      description: formData.description.value
+    })
+    jobsApi.post('', newJob)
+      .then(res => {
+        this.getJobs(draw)
+      })
   }
 }

@@ -1,41 +1,37 @@
 import Car from "../../models/Car.js";
 
-let cars = []
-
+const carsApi = axios.create({
+  baseURL: 'https://bcw-gregslist.herokuapp.com/api/cars',
+  timeout: 3000
+})
 
 export default class CarService {
   constructor() {
 
   }
 
-  getCars() {
-    let carsCopy = []
-
-    cars.forEach(car => {
-      carsCopy.push(new Car(
-        car.make,
-        car.model,
-        car.year,
-        car.price,
-        car.color,
-        car.imgUrl
-      ))
-    })
-    return carsCopy
+  getCars(draw) {
+    carsApi.get()
+      .then(res => {
+        let cars = res.data.data.map(rC => {
+          return new Car(rC)
+        })
+        draw(cars)
+      })
   }
 
-  addCar(formData) {
-    let newCar = new Car(
-      formData.make.value,
-      formData.model.value,
-      formData.year.value,
-      formData.price.value,
-      formData.color.value,
-      formData.imgUrl.value
-    )
-    cars.push(newCar)
-    console.log(cars)
-
-
+  addCar(formData, draw) {
+    let newCar = new Car({
+      make: formData.make.value,
+      model: formData.model.value,
+      year: formData.year.value,
+      price: formData.price.value,
+      description: formData.description.value,
+      imgUrl: formData.imgUrl.value
+    })
+    carsApi.post('', newCar)
+      .then(res => {
+        this.getCars(draw)
+      })
   }
 }
